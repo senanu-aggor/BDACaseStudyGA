@@ -9,17 +9,19 @@ The case will show you how to download data from Google Analytics, make some bas
 
 Fork this repository and load its content into R.
 
-Follow the instructions in RunStudy.R. If you have access to a Google Analytics account, use your own data. If not, just load the file GACaseStudyData.csv in the data folder
+Follow the instructions in RunStudy.R. If you have access to a Google Analytics account, use your own data. If not, just load the file GACaseStudyData.csv in the data folder.
 
 Make the needed transformations of the data in RunStudy.R 
+
+Understand the data by going through the video [here](not available yet)
 
 Open GAReport.Rmd, understand what it does by pulling a html report and create the visualizations/analysis to answer the following questions within the report
 
 ### Questions
 
-1. How does Visits(Sessions) and Bounce Rate are related? Is there a difference depending on the type of users?
+1. How does visits(sessions) and bounce rate are related? Is there a difference depending on the type of users?
 
-2. How do pageviews per user behave per month?
+2. How do average pageviews per user behave per month?
 
 3. What are the pages with higher time on page? 
 
