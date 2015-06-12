@@ -23,7 +23,7 @@ Open GAReport.Rmd, understand what it does by pulling a html report and create t
 
 2. How do average pageviews per user behave per month?
 
-3. What are the pages with higher time on page? 
+3. What are the pages with the highest average time on page? 
 
 4. Is exit rate related to the average page load time?
 
