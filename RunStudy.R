@@ -20,7 +20,7 @@
 # 
 # The website that you have access to must have more than 3 months of available data.
 #
-# If you do not have access, use the data in GACaseStudyData.csv 
+# If you do not have access, use the data in data/GACaseStudyData.csv 
 #
 
 # Clean the workspace
@@ -99,3 +99,44 @@ gadata <- ddply(gadata,
                 pageLoadTime=sum(uniquePageviews))
 
 # Now you have your data completely clean to analyze and visualize. Enjoy!
+  
+  
+  
+  
+  
+  
+  ############   Author notes   #############
+
+client.id <- "972513462276-f9pvjl1huqnbh8lnl7qa9f06vcqmt878.apps.googleusercontent.com"
+client.secret <- "3VQNCCEJKA4oBpWmeSZZMLbI"
+token <- Auth(client.id,client.secret)
+ValidateToken(token)
+query.list <- Init(start.date = "2010-01-01",
+                   end.date = "2015-01-01",
+                   dimensions = "ga:month, ga:pagePath, ga:sourceMedium, ga:userType, ga:deviceCategory",
+                   metrics = "ga:entrances, ga:pageviews, ga:exits,ga:timeOnPage, ga:uniquePageviews, ga:pageLoadTime",
+                   max.results = 10000,
+                   table.id = "ga:35315826")           
+ga.query <- QueryBuilder(query.list)
+gadata <- GetReportData(ga.query, token)
+gadata <- ga.data
+ts <- gadata %>% group_by(month,pagePath,sourceMedium,userType,deviceCategory) %>% summarise_each(funs(sum))
+
+gadata$pagePath <- gsub("\\?.*","",gadata$pagePath)
+
+
+as <- tbl_df(as) 
+as <-  group_by(gadata,month,pagePath,sourceMedium,userType,deviceCategory)
+
+as
+bs <- (summarise(as,
+                 entrances=sum(entrances),pageviews=sum(pageviews),exits=sum(exits),timeOnPage=sum(timeOnPage),
+                 uniquePageviews=sum(uniquePageviews),pageLoadTime=sum(pageLoadTime)))
+bs <- as %>% group_by(month,pagePath,sourceMedium,userType,deviceCategory) %>% summarise_each(funs(sum))
+
+as %>% group_by(pagePath,sourceMedium,userType,deviceCategory) %>%
+  summarise(entrances=sum(entrances),pageviews=sum(pageviews),exits=sum(exits),timeOnPage=sum(timeOnPage),
+            uniquePageviews=sum(uniquePageviews),pageLoadTime=sum(pageLoadTime))
+summary(ss)
+ss
+
