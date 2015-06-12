@@ -99,5 +99,3 @@ gadata <- ddply(gadata,
                 pageLoadTime=sum(uniquePageviews))
 
 # Now you have your data completely clean to analyze and visualize. Enjoy!
-
-
