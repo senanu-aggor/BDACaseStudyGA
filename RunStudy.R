@@ -100,7 +100,13 @@ gadata <- ddply(gadata,
 
 # Now you have your data completely clean to analyze and visualize. Enjoy!
   
-  
+
+
+
+
+
+
+
   
   
   
