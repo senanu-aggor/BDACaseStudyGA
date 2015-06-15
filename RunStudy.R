@@ -15,6 +15,9 @@
 # RGoogleAnalytics: to connect with GA API and download the data
 # dplyr: to manipulate the data
 # lattice, ggplot2: to visualize the data
+# stringr: to manipulate text
+# Other packages will be used (knitr, shiny) as seen in class
+#
 #
 # You must have access to a Google Analytics account through your Gmail/Google account.
 # 
@@ -26,13 +29,18 @@
 # Clean the workspace
 rm(list=ls())
 
+# Set up the working directory
+
+local_directory <- getwd()
+
 # Install and load required packages
 
-install.packages(c("plyr","dplyr","lattice","ggplot2","stringr"))
-library(devtools)
-install_github("Tatvic/RGoogleAnalytics")
-invisible(lapply(c("plyr","dplyr","lattice","ggplot2","stringr","RGoogleAnalytics"), library, character.only=T))
+source(paste(local_directory,"R/library.R", sep="/"))
 
+# This is the name of the Report and Slides (in the doc directory) to generate 
+report_file = "GAReport"
+
+##############################
 # Skip this part if you do not have access to Google Analytics (jump to CONTINUE HERE)
 
 # In order to download data from GA API, you need to give access to your application
@@ -64,22 +72,16 @@ start.date  <-  "{Start date of the data}"
 end.date  <-  "{End date of the data}"
 # Make sure you have at least three months of data
 # Now, run the following code
-query.list <- Init(start.date = start.date,
-                   end.date = end.date,
-                   dimensions = "ga:month, ga:pagePath, ga:sourceMedium, ga:userType, ga:deviceCategory",
-                   metrics = "ga:entrances, ga:pageviews, ga:exits, ga:timeOnPage, ga:uniquePageviews, ga:pageLoadTime",
-                   max.results = 10000,
-                   table.id = table.id)           
-ga.query <- QueryBuilder(query.list)
-ga.data <- GetReportData(ga.query, token)
-gadata <- ga.data
+
+source(paste(local_directory,"R/GAQuery.R", sep="/"))
 
 # CONTINUE HERE
-# If you do not have access to GA, load the csv in the data folder into the variable ga.data
-# ga.data <- read.csv("~/GACaseStudyData.csv")
+# If you do not have access to GA, load the csv in the "data" folder into the variable gadata
+if (!exists("gadata")) 
+  gadata <- within(read.csv(paste(local_directory,"data/GACaseStudyData.csv", sep="/")),rm("X"))
 
 # Make sure ga.data contains the data you want
-gadata <- ga.data
+
 str(gadata)
 
 # Clean pagePath so everything after "?" is deleted. This is needed because
@@ -98,10 +100,31 @@ gadata <- ddply(gadata,
                 timeOnPage=sum(timeOnPage),uniquePageviews=sum(uniquePageviews),
                 pageLoadTime=sum(uniquePageviews))
 
-# Now you have your data completely clean to analyze and visualize. Enjoy!
+# Now you have your data completely clean to analyze and visualize.
+
+###########################
+# Would you like to also start a web application on YOUR LOCAL COMPUTER once the report and slides are generated?
+# Select start_webapp <- 1 ONLY if you run the case on your local computer
+# NOTE: Running the web application on your LOCAL computer will open a new browser tab
+# Otherwise, when running on a server the application will be automatically available
+# through the ShinyApps directory
+
+# 1: start application on LOCAL computer, 0: do not start it
+# SELECT 0 if you are running the application on a server 
+# (DEFAULT is 0). 
+start_local_webapp <- 0
+
+
+source(paste(local_directory,"R/runcode.R", sep = "/"))
+
+
+if (start_local_webapp){
   
-
-
+  # now run the app
+  if (require(shiny) == FALSE) 
+    install_libraries("shiny")
+  runApp(paste(local_directory,"tools", sep="/"))  
+}
 
 
 
@@ -117,8 +140,11 @@ client.id <- "972513462276-f9pvjl1huqnbh8lnl7qa9f06vcqmt878.apps.googleuserconte
 client.secret <- "3VQNCCEJKA4oBpWmeSZZMLbI"
 token <- Auth(client.id,client.secret)
 ValidateToken(token)
-query.list <- Init(start.date = "2010-01-01",
-                   end.date = "2015-01-01",
+start.date = "2010-01-01"
+end.date = "2015-01-01"
+table.id = "ga:35315826"
+query.list <- Init(start.date = start.date,
+                   end.date = end.date,
                    dimensions = "ga:month, ga:pagePath, ga:sourceMedium, ga:userType, ga:deviceCategory",
                    metrics = "ga:entrances, ga:pageviews, ga:exits,ga:timeOnPage, ga:uniquePageviews, ga:pageLoadTime",
                    max.results = 10000,

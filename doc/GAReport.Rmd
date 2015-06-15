@@ -1,15 +1,22 @@
----
-title: "GA Report"
-output: html_document
----
+Google Analytics Visualizations
+==========================================
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+ **Jesus Martin** - *INSEAD MBA 15J*
+ 
+ jesus.martin.calvo@gmail.com
+ 
+ In this report we will show how to create visualizations with data from Google Analytics
+ to understand user behavior in a website. If you were able to download the data from your
+ Google Analytics account, you will have some insights about how users interact with your
+ website. If you are using the example data provided. you will see how users have interacted
+ with the website www.encortosabemejor.com. 
+ 
+ 
 
 
 ```{r}
-str(ga.data)
+ls()
+#head(gadata)
 ```
 
 You can also embed plots, for example:
