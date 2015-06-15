@@ -12,11 +12,11 @@ Google Analytics Visualizations
  with the website www.encortosabemejor.com. 
  
  
+First, let's take a look at the data
 
-
-```{r}
-ls()
-#head(gadata)
+```{r, echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+t1 <- gvisTable(gadata,options=list(showRowNumber=TRUE,width=800, height=min(400,27*(nrow(gadata)+1)),allowHTML=TRUE,page='disable'))
+print(t1,'chart')
 ```
 
 You can also embed plots, for example:
