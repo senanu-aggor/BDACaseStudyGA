@@ -4,8 +4,8 @@
 
 query.list <- Init(start.date = start.date,
                    end.date = end.date,
-                   dimensions = "ga:month, ga:pagePath, ga:sourceMedium, ga:userType, ga:deviceCategory",
-                   metrics = "ga:entrances, ga:pageviews, ga:exits, ga:timeOnPage, ga:uniquePageviews, ga:pageLoadTime",
+                   dimensions = "ga:year, ga:month, ga:pagePath, ga:sourceMedium, ga:userType, ga:deviceCategory",
+                   metrics = "ga:entrances, ga:pageviews, ga:exits, ga:timeOnPage, ga:uniquePageviews,ga:users",
                    max.results = 10000,
                    table.id = table.id)           
 ga.query <- QueryBuilder(query.list)

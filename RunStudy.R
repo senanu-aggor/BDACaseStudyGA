@@ -93,12 +93,19 @@ gadata$pagePath <- gsub("\\?.*","",gadata$pagePath)
 
 # Summarize rows
 
-gadata <- ddply(gadata,
-                .(month,pagePath,sourceMedium,userType,deviceCategory),
-                summarise, 
-                entrances=sum(entrances),pageviews=sum(pageviews),exits=sum(exits),
-                timeOnPage=sum(timeOnPage),uniquePageviews=sum(uniquePageviews),
-                pageLoadTime=sum(uniquePageviews))
+# gadata <- ddply(gadata,
+#                 .(year,month,pagePath,sourceMedium,userType,deviceCategory),
+#                 summarise, 
+#                 entrances=sum(entrances),pageviews=sum(pageviews),exits=sum(exits),
+#                 timeOnPage=sum(timeOnPage),uniquePageviews=sum(uniquePageviews),
+#                 users=sum(users))
+
+gadata2 <- gadata %>% 
+  group_by(year,month,pagePath,sourceMedium,userType,deviceCategory) %>%
+  summarise(entrances=sum(entrances),pageviews=sum(pageviews),exits=sum(exits),
+             timeOnPage=sum(timeOnPage),uniquePageviews=sum(uniquePageviews),
+             users=sum(users))
+
 
 # Now you have your data completely clean to analyze and visualize.
 

@@ -8,7 +8,7 @@ get_libraries <- function(filenames_list) {
     do.call(library,list(thelibrary))
   })
 }
-libraries_used=c("plyr","dplyr","lattice","devtools","knitr","graphics",
+libraries_used=c("dplyr","lattice","devtools","knitr","graphics",
                  "grDevices","xtable","Hmisc","vegan","fpc","GPArotation","slidify",
                  "FactoMineR","cluster","psych","stringr","googleVis", "png",
                  "ggplot2","googleVis", "gridExtra")

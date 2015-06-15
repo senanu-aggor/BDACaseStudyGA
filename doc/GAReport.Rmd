@@ -12,17 +12,40 @@ Google Analytics Visualizations
  with the website www.encortosabemejor.com. 
  
  
+First, let's take a look at the first 100 rows of data
 
-
-```{r}
-ls()
-#head(gadata)
+```{r, echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+t1 <- gvisTable(gadata[1:100,],options=list(showRowNumber=TRUE,width=800, height=min(400,27*(nrow(gadata)+1)),allowHTML=TRUE,page='disable'))
+print(t1,'chart')
 ```
 
-You can also embed plots, for example:
+It is very important that you understand each of the columns, let's review its content 
 
-```{r, echo=FALSE}
-plot(cars)
+* **year**: the year the data was collected
+* **month**: the month of the year the data was collected
+* **pagePath**: the URL of the page which the data belongs to, excluding the domain. 
+* **sourceMedium**: an identifier for the origin of the user that viewed the page. For
+example, (direct) / (none) means tipically that a user typed directly the URL in the browser
+while facebook.com / referral means that user came from another website (a referral) and that
+website was facebook.com
+* **userType**: whether the user had been before in the website or not (New Visitor/Returning Visitor)
+* **deviceCategory**: the device of the user
+* **entrances**: how many times a user entered the website through that page
+* **pageviews**: how many times a user opened that page
+* **exits**: how many times that page was the last one opened by a user in the same session
+* **timeOnPage**: how many seconds this page has been viewed
+* **uniquePageviews**: how many times this page has been viewed in an unique session
+
+From these columns we can have some derived metrics, for example:
+
+* **Average time on page**= timeOnPage/(pageviews-exits)
+* **Bounce rate**= exits/entrances
+* **Exit rate**= exits/pageviews
+
+We can see the visits per month, measured by the number of entrances
+
+```{r, echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+entrpmonth <-  group_by(gadata, month) %>% summarise(entrances=sum(entrances))
+qplot(month,entrances,data=entrpmonth,geom='line')
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
