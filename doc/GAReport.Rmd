@@ -11,18 +11,11 @@ Google Analytics Visualizations
  website. If you are using the example data provided. you will see how users have interacted
  with the website www.encortosabemejor.com. 
  
- 
-<<<<<<< HEAD
+
 First, let's take a look at the first 100 rows of data
 
 ```{r, echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
 t1 <- gvisTable(gadata[1:100,],options=list(showRowNumber=TRUE,width=800, height=min(400,27*(nrow(gadata)+1)),allowHTML=TRUE,page='disable'))
-=======
-First, let's take a look at the data
-
-```{r, echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
-t1 <- gvisTable(gadata,options=list(showRowNumber=TRUE,width=800, height=min(400,27*(nrow(gadata)+1)),allowHTML=TRUE,page='disable'))
->>>>>>> 9c8d2186eaa7b1323ace591790b3afd393d4f896
 print(t1,'chart')
 ```
 
