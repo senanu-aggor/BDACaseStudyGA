@@ -1,9 +1,9 @@
 
 # Big Data and Analytics for Business Case Study: Google Analytics and R
 
-If you feel comfortable with the content in the videos above, you are ready to review the following case study. 
+You must have watched the [introductory videos](https://docs.google.com/document/d/1NCwyFpmBtBSUrRxWQ9xv5lD8VX_MUPode0hODerJl0Y/edit?usp=drive_web) for the course in order to start with this case study. 
 
-The case will show you how to download data from Google Analytics, make some basic transformations and will create a report visualizing the data.
+The case will show you how to download data from Google Analytics, make some basic transformations and will create a report visualizing the data to support on the content creation decisions of the website.
 
 ## Assigment
 

@@ -68,6 +68,7 @@ report_file = "GAReport"
 table.id <- "{copy paste your View ID here}"
 # Now, we are ready to create the criteria for the data we want to download
 # Run the following code adding the required information in the fields{}.
+# Format is YYYY-MM-DD
 start.date  <-  "{Start date of the data}"
 end.date  <-  "{End date of the data}"
 # Make sure you have at least three months of data
@@ -81,65 +82,22 @@ if (!exists("gadata"))
   gadata <- within(read.csv(paste(local_directory,"data/GACaseStudyData.csv", sep="/")),rm("X"))
 
 # Make sure ga.data contains the data you want
-
-str(gadata)
-
-# Clean pagePath so everything after "?" is deleted. This is needed because
-# Google Analytics will by default store things that in this case we do not care about
-# and therefore we can clean/tidy the data further. 
-# For more on the topic, read http://vita.had.co.nz/papers/tidy-data.pdf
-
-gadata$pagePath <- gsub("\\?.*","",gadata$pagePath)
-
-# Summarize rows
-
-# gadata <- ddply(gadata,
-#                 .(year,month,pagePath,sourceMedium,userType,deviceCategory),
-#                 summarise, 
-#                 entrances=sum(entrances),pageviews=sum(pageviews),exits=sum(exits),
-#                 timeOnPage=sum(timeOnPage),uniquePageviews=sum(uniquePageviews),
-#                 users=sum(users))
-
-gadata2 <- gadata %>% 
-  group_by(year,month,pagePath,sourceMedium,userType,deviceCategory) %>%
-  summarise(entrances=sum(entrances),pageviews=sum(pageviews),exits=sum(exits),
-             timeOnPage=sum(timeOnPage),uniquePageviews=sum(uniquePageviews),
-             users=sum(users))
-
-
+#str(gadata)
+#head(gadata)
 # Now you have your data completely clean to analyze and visualize.
-
-###########################
-# Would you like to also start a web application on YOUR LOCAL COMPUTER once the report and slides are generated?
-# Select start_webapp <- 1 ONLY if you run the case on your local computer
-# NOTE: Running the web application on your LOCAL computer will open a new browser tab
-# Otherwise, when running on a server the application will be automatically available
-# through the ShinyApps directory
-
-# 1: start application on LOCAL computer, 0: do not start it
-# SELECT 0 if you are running the application on a server 
-# (DEFAULT is 0). 
-start_local_webapp <- 0
-
-
+# 
+# Create the report
 source(paste(local_directory,"R/runcode.R", sep = "/"))
-
-
-if (start_local_webapp){
-  
-  # now run the app
-  if (require(shiny) == FALSE) 
-    install_libraries("shiny")
-  runApp(paste(local_directory,"tools", sep="/"))  
-}
+# 
 
 
 
 
 
-  
-  
-  
+
+
+
+
   
   ############   Author notes   #############
 
@@ -148,7 +106,7 @@ client.secret <- "3VQNCCEJKA4oBpWmeSZZMLbI"
 token <- Auth(client.id,client.secret)
 ValidateToken(token)
 start.date = "2010-01-01"
-end.date = "2015-01-01"
+end.date = "2014-12-31"
 table.id = "ga:35315826"
 query.list <- Init(start.date = start.date,
                    end.date = end.date,

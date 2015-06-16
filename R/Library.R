@@ -5,7 +5,7 @@ get_libraries <- function(filenames_list) {
   lapply(filenames_list,function(thelibrary){    
     if (do.call(require,list(thelibrary)) == FALSE) 
       do.call(install.packages,list(thelibrary)) 
-    do.call(library,list(thelibrary))
+    do.call(suppressPackageStartupMessages(library),list(thelibrary))
   })
 }
 libraries_used=c("dplyr","lattice","devtools","knitr","graphics",
@@ -17,3 +17,5 @@ get_libraries(libraries_used)
 if (do.call(require,list("RGoogleAnalytics")) == FALSE) 
   do.call(install_github,list("Tatvic/RGoogleAnalytics")) 
 do.call(library,list("RGoogleAnalytics"))
+
+
