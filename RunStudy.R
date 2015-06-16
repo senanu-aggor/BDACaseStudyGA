@@ -81,32 +81,8 @@ if (!exists("gadata"))
   gadata <- within(read.csv(paste(local_directory,"data/GACaseStudyData.csv", sep="/")),rm("X"))
 
 # Make sure ga.data contains the data you want
-
-str(gadata)
-
-# Clean pagePath so everything after "?" is deleted. This is needed because
-# Google Analytics will by default store things that in this case we do not care about
-# and therefore we can clean/tidy the data further. 
-# For more on the topic, read http://vita.had.co.nz/papers/tidy-data.pdf
-
-gadata$pagePath <- gsub("\\?.*","",gadata$pagePath)
-
-# Summarize rows
-
-# gadata <- ddply(gadata,
-#                 .(year,month,pagePath,sourceMedium,userType,deviceCategory),
-#                 summarise, 
-#                 entrances=sum(entrances),pageviews=sum(pageviews),exits=sum(exits),
-#                 timeOnPage=sum(timeOnPage),uniquePageviews=sum(uniquePageviews),
-#                 users=sum(users))
-
-gadata2 <- gadata %>% 
-  group_by(year,month,pagePath,sourceMedium,userType,deviceCategory) %>%
-  summarise(entrances=sum(entrances),pageviews=sum(pageviews),exits=sum(exits),
-             timeOnPage=sum(timeOnPage),uniquePageviews=sum(uniquePageviews),
-             users=sum(users))
-
-
+#str(gadata)
+#head(gadata)
 # Now you have your data completely clean to analyze and visualize.
 
 ###########################
@@ -148,7 +124,7 @@ client.secret <- "3VQNCCEJKA4oBpWmeSZZMLbI"
 token <- Auth(client.id,client.secret)
 ValidateToken(token)
 start.date = "2010-01-01"
-end.date = "2015-01-01"
+end.date = "2014-12-31"
 table.id = "ga:35315826"
 query.list <- Init(start.date = start.date,
                    end.date = end.date,

@@ -5,17 +5,20 @@ Google Analytics Visualizations
  
  jesus.martin.calvo@gmail.com
  
+ This case addresses some of the most fundamental issues in Data Analysis and Visualization, 
+ getting data from a source: clean, summarize and visualize. Moreover, we will use one of the
+ most growing sources of data for any company, user behavior on websites. 
+ 
  In this report we will show how to create visualizations with data from Google Analytics
  to understand user behavior in a website. If you were able to download the data from your
  Google Analytics account, you will have some insights about how users interact with your
  website. If you are using the example data provided. you will see how users have interacted
  with the website www.encortosabemejor.com. 
  
-
-First, let's take a look at the first 100 rows of data
+First, let's take a look at the first 1000 rows of data
 
 ```{r, echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
-t1 <- gvisTable(gadata[1:100,],options=list(showRowNumber=TRUE,width=800, height=min(400,27*(nrow(gadata)+1)),allowHTML=TRUE,page='disable'))
+t1 <- gvisTable(gadata[1:1000,],options=list(showRowNumber=TRUE,width=800, height=min(400,27*(nrow(gadata)+1)),allowHTML=TRUE,page='disable'))
 print(t1,'chart')
 ```
 
@@ -42,10 +45,31 @@ From these columns we can have some derived metrics, for example:
 * **Bounce rate**= exits/entrances
 * **Exit rate**= exits/pageviews
 
-We can see the visits per month, measured by the number of entrances
+For example, we can see the visits per month, measured by the number of entrances
 
 ```{r, echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
 entrpmonth <-  group_by(gadata, month) %>% summarise(entrances=sum(entrances))
-qplot(month,entrances,data=entrpmonth,geom='line')
+
+ggplot(entrpmonth,aes(x=month,y=entrances)) + geom_line() +
+  scale_x_discrete(breaks=seq(1:12)) +
+  coord_fixed(ratio=1/60)
 ```
 
+And its evolution year by year
+```{r, echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+entrpmonthyear <-  group_by(gadata, month,year) %>% summarise(entrances=sum(entrances))
+ggplot(entrpmonthyear,aes(x=month,y=entrances,group=year,color=factor(year))) + geom_line() + 
+scale_x_discrete(breaks=seq(1:12)) +
+  coord_fixed(ratio=1/60)
+```
+
+Or as a continuous line
+
+```{r, echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+
+entryearmonth <-  gadata %>% group_by(yearmonth) %>% summarise(entrances=sum(entrances))
+ggplot(entryearmonth,aes(x=factor(yearmonth),y=entrances,group=1)) + geom_line() +
+  scale_x_discrete(breaks=entryearmonth$yearmonth) +
+  coord_fixed(ratio=1/60) +
+  xlab("Year Month")
+```
