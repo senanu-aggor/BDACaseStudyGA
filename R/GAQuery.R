@@ -19,7 +19,7 @@ ga.data <- GetReportData(ga.query, token)
 gadata <- ga.data
 
 # Add YearMonth variable
-gadata$yearmonth <- paste(gadata$year,gadata$month,sep="")
+# gadata$yearmonth <- paste(gadata$year,gadata$month,sep="")
 
 
 # Clean pagePath so everything after "?" is deleted. This is needed because
@@ -32,12 +32,12 @@ gadata$pagePath <- gsub("\\?.*","",gadata$pagePath)
 # Summarize rows
 gadata <- gadata %>% 
   group_by(yearmonth,year,month,pagePath,source,Medium,userType,deviceCategory) %>%
-  summarise(entrances=sum(entrances),pageviews=sum(pageviews),exits=sum(exits),
-            timeOnPage=sum(timeOnPage),uniquePageviews=sum(uniquePageviews),
-            users=sum(users))
+  summarise(entrances = sum(entrances),pageviews = sum(pageviews),exits = sum(exits),
+            timeOnPage = sum(timeOnPage),uniquePageviews = sum(uniquePageviews),
+            users = sum(users))
 
 
 # Convert year and month in integers
 gadata$month <- as.integer(gadata$month)
 gadata$year <- as.integer(gadata$year)
-gadata$yearmonth <- as.integer(gadata$yearmonth)
+# gadata$yearmonth <- as.integer(gadata$yearmonth)
