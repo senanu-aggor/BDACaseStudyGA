@@ -19,15 +19,15 @@ Open GAReport.Rmd, understand what it does by pulling a html report and create t
 
 ### Questions
 
-1. How does visits(sessions) and bounce rate are related? Is there a difference depending on the type of users?
+1. What are the pages with more visits? Are them the same when medium is not 'cpc'? Can you make a recommendation on the most popular pages?
 
-2. How do average pageviews per user behave per month?
+2. What are the exit rates for the pages with the most number of exits? How would you change the content of the page to reduce exit rate? 
 
-3. What are the pages with the highest average time on page? 
+3. What are the pages with the highest average time on page? Would you recommend the author to write more on these topics?
 
-4. Is exit rate related to the average page load time?
+3. What combinations of sources and mediums attract the more amount of new visitors? Is their exit rate different to the existing visitors?
 
-5. How many pages on average visits a user per device? Is it different in summer?
+4. When medium is referral, which are the sources that attracted the highest number of pageviews? Based on this, should the author promote the content in any of these websites? Would it be better to invest in visitors coming from the medium 'cpc'?
 
 
 
