@@ -3,7 +3,7 @@
 ==========================================
 
 **Jesus Martin** - *INSEAD MBA 15J*
- 
+
 jesus.martin.calvo@gmail.com
  
 ## Business motivation
@@ -50,7 +50,7 @@ From these columns we can have some derived metrics, for example:
 
 ## Introductory analysis
 
-For example, we can see the visits per month, measured by the number of entrances
+For example, we can visualize the seasonality of the visits per month, measured by the number of entrances
 
 ```{r, echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
 entrpmonth <-  group_by(gadata, month) %>% summarise(entrances = sum(entrances))
@@ -64,8 +64,8 @@ ggplot(entrpmonth, aes(x = month,y = entrances)) + geom_line() +
 And its evolution year by year
 
 ```{r, echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
-entrpmonthyear <-  group_by(gadata, month,year) %>% summarise(entrances = sum(entrances))
-ggplot(entrpmonthyear,aes(x = month, y = entrances, group = year, color = factor(year))) + geom_line() + scale_x_discrete(breaks = seq(1:12))
+entrpyear <-  group_by(gadata, factor(year)) %>% summarise(entrances = sum(entrances))
+ggplot(entrpmonthyear,aes(x = year, y = entrances)) + geom_bar(stat="identity", fill = "lightblue", colour = "black")
   
 ```
 
@@ -82,8 +82,3 @@ In this case study, you will have to answer five questions which will help the w
 3. What combinations of sources and mediums attract the more amount of new visitors? Is their exit rate different to the existing visitors?
 
 4. When medium is referral, which are the sources that attracted the highest number of pageviews? Based on this, should the author promote the content in any of these websites? Would it be better to invest in visitors coming from the medium 'cpc'?
-
-
-
-
-
