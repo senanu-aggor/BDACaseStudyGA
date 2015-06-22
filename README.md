@@ -15,7 +15,7 @@ Make the needed transformations of the data in RunStudy.R
 
 Understand the data by going through the video [here]
 
-Open GAReport.Rmd, understand what it does by pulling a html report and create the visualizations/analysis to answer the following questions within the report
+Open GAReport.Rmd in the folder doc, understand what it does by pulling a html report and create the visualizations/analysis to answer the following questions within the report.
 
 ### Questions
 
