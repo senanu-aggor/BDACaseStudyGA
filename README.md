@@ -13,9 +13,7 @@ Follow the instructions in RunStudy.R. If you have access to a Google Analytics 
 
 Make the needed transformations of the data in RunStudy.R 
 
-Understand the data by going through the video [here]
-
-Open GAReport.Rmd in the folder doc, understand what it does by pulling a html report and create the visualizations/analysis to answer the following questions within the report.
+Open GAReport.Rmd in the folder doc, understand what it does by creating a html report (through RunStudy.R) and create the visualizations/analysis to answer the following questions within the report.
 
 ### Questions
 
