@@ -63,10 +63,10 @@ ggplot(entrpmonth, aes(x = month,y = entrances)) + geom_line() +
 
 And its evolution year by year
 
-```{r, echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+```{r echo=TRUE, eval=TRUE, tidy=TRUE}
 entrpyear <-  group_by(gadata, factor(year)) %>% summarise(entrances = sum(entrances))
-ggplot(entrpmonthyear,aes(x = year, y = entrances)) + geom_bar(stat="identity", fill = "lightblue", colour = "black")
-  
+entrpyear = data.frame(year = entrpyear$`factor(year)`, entrances = entrpyear$entrances)
+ggplot(entrpyear,aes(x = factor(year), y = entrances)) + geom_bar(stat="identity", fill = "lightblue", colour = "black")
 ```
 
 ## Questions to solve
@@ -82,3 +82,95 @@ In this case study, you will have to answer five questions which will help the w
 3. What combinations of sources and mediums attract the more amount of new visitors? Is their exit rate different to the existing visitors?
 
 4. When medium is referral, which are the sources that attracted the highest number of pageviews? Based on this, should the author promote the content in any of these websites? Would it be better to invest in visitors coming from the medium 'cpc'?
+
+### Answers:
+
+1. 
+
+```{r echo=TRUE, eval=TRUE, tidy=TRUE}
+entrppage <-  group_by(gadata, factor(pagePath)) %>% summarise(entrances = sum(entrances))
+entrppage = data.frame(pages = entrppage$`factor(pagePath)`, entrances = entrppage$entrances)
+top_entrppage = entrppage[sort(entrppage$entrances, decreasing =  TRUE, index.return = TRUE)$ix,]
+```
+
+```{r echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+show_data = data.frame(top_entrppage)
+m1<-gvisTable(show_data,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
+print(m1,'chart')
+```
+
+Medium  not "cpc"
+
+```{r echo=TRUE, eval=TRUE, tidy=TRUE}
+gadata_nocpc = gadata[gadata$Medium != "cpc",]
+entrppage_nocpc <-  group_by(gadata_nocpc, factor(pagePath)) %>% summarise(entrances = sum(entrances))
+entrppage_nocpc = data.frame(pages = entrppage_nocpc$`factor(pagePath)`, entrances = entrppage_nocpc$entrances)
+top_entrppage_nocpc = entrppage_nocpc[sort(entrppage_nocpc$entrances, decreasing =  TRUE, index.return = TRUE)$ix,]
+```
+
+```{r echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+show_data = data.frame(top_entrppage_nocpc)
+m1<-gvisTable(show_data,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
+print(m1,'chart')
+```
+
+
+2. 
+
+```{r echo=TRUE, eval=TRUE, tidy=TRUE}
+exitppage <-  group_by(gadata, factor(pagePath)) %>% summarise(exits = sum(exits))
+exitppage = data.frame(pages = exitppage$`factor(pagePath)`, exits = exitppage$exits)
+top_exitppage = exitppage[sort(exitppage$exits, decreasing =  TRUE, index.return = TRUE)$ix,]
+```
+
+```{r echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+show_data = data.frame(top_exitppage)
+m1<-gvisTable(show_data,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
+print(m1,'chart')
+```
+
+
+3. 
+
+```{r echo=TRUE, eval=TRUE, tidy=TRUE}
+timeppage <-  group_by(gadata, factor(pagePath)) %>% summarise(timeOnPage = sum(timeOnPage))
+timeppage = data.frame(pages = timeppage$`factor(pagePath)`, timeOnPage = timeppage$timeOnPage)
+top_exitppage = timeppage[sort(timeppage$timeOnPage, decreasing =  TRUE, index.return = TRUE)$ix,]
+```
+
+```{r echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+show_data = data.frame(top_exitppage)
+m1<-gvisTable(show_data,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
+print(m1,'chart')
+```
+
+
+4. 
+
+```{r echo=TRUE, eval=TRUE, tidy=TRUE}
+gadata$source_medium = paste(gadata$source, gadata$Medium, sep=" ")
+source_mediumppage <-  group_by(gadata, factor(source_medium)) %>% summarise(users = sum(users))
+source_mediumppage = data.frame(pages = source_mediumppage$`factor(source_medium)`, users = source_mediumppage$users)
+top_source_mediumppage = source_mediumppage[sort(source_mediumppage$users, decreasing =  TRUE, index.return = TRUE)$ix,]
+```
+
+```{r echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+show_data = data.frame(top_source_mediumppage)
+m1<-gvisTable(show_data,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
+print(m1,'chart')
+```
+
+5. 
+
+```{r echo=TRUE, eval=TRUE, tidy=TRUE}
+gadata_referral = gadata[gadata$Medium =="referral", ]
+source_referral <-  group_by(gadata_referral, factor(source)) %>% summarise(uniquePageviews = sum(uniquePageviews))
+source_referral = data.frame(pages = source_referral$`factor(source)`, uniquePageviews = source_referral$uniquePageviews)
+top_source_referral = source_referral[sort(source_referral$uniquePageviews, decreasing =  TRUE, index.return = TRUE)$ix,]
+```
+
+```{r echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+show_data = data.frame(top_source_referral)
+m1<-gvisTable(show_data,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
+print(m1,'chart')
+```
