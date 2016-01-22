@@ -52,10 +52,10 @@ report_file = "GAReport"
 # Step 4: Click "Credentials" and then "Create a new Client ID"
 # Step 4: Select "Installed Application" and "Other" and click in "Create Client ID"
 # Step 5: Run the following code with the information that is displayed in the fields {}:
- client.id <- "{copy paste your Client ID here}"
- client.secret <- "{copy paste your Client secret here}"
- token <- Auth(client.id,client.secret)
- ValidateToken(token)
+# client.id <- "{copy paste your Client ID here}"
+# client.secret <- "{copy paste your Client secret here}"
+# token <- Auth(client.id,client.secret)
+# ValidateToken(token)
 # Give permissions to your application to access your GA data
 # You must see in your RStudio console "Authentication complete."
 # If you need help, type "?Auth" (no quotes) in the RStudio console
@@ -65,16 +65,16 @@ report_file = "GAReport"
 # Visit http://analytics.google.com, select the view where you want to take the data from
 # and click on "Admin", then click on "View Settings"
 # Run the following code with the View ID in the field {}
-table.id <- "{copy paste your View ID here}"
+# table.id <- "{copy paste your View ID here}"
 # Now, we are ready to create the criteria for the data we want to download
 # Run the following code adding the required information in the fields{}.
 # Format is YYYY-MM-DD
-start.date  <-  "{Start date of the data}"
-end.date  <-  "{End date of the data}"
+# start.date  <-  "{Start date of the data}"
+# end.date  <-  "{End date of the data}"
 # Make sure you have at least three months of data
 # Now, run the following code
 
-source(paste(local_directory,"R/GAQuery.R", sep="/"))
+#source(paste(local_directory,"R/GAQuery.R", sep="/"))
 
 # CONTINUE HERE
 # If you do not have access to GA, load the csv in the "data" folder into the variable gadata
