@@ -1,0 +1,203 @@
+
+ Google Analytics Case Study
+==========================================
+
+**Jesus Martin** - *INSEAD MBA 15J*
+
+jesus.martin.calvo@gmail.com
+ 
+## Business motivation
+ 
+ Developing a digital strategy has become a need for any company, regardless of their core business. That involves creating the online experiences, including websites, applications, social media or any marketing technique that communicates effectively with the users. Whether it is to build a brand or sell a product, these actions need to be measured to understand its success and improve them. However, most companies struggle with this "digital analytics". 
+ 
+ One of the main tools to measure activity of users in a website or other digital experience is Google Analytics (GA). It is free and allows you to understand most aspects of their behavior. Companies use it with different purposes, varying from deciding which marketing investments they should continue or stop as well as what messages in social networks have a higher impact for their business. 
+ 
+ This case will guide you to download some data from your GA account (if you do not have access to any, you can download some sample data from the website www.encortosabemejor.com) and show you some ways to understand how your website is performing in order to make managerial decisions. In this case it will help you to understand what content is generating higher user engagement so the company can focus on this type of content as well as understand whether this content should be focused on new readers so the community grows or to focus on existing readers so the community is more engaged. 
+ 
+ In addition to that, this case addresses some of the most fundamental issues in Data Analysis and Visualization: getting data from a source, clean, summarize and visualize. 
+ 
+ The sample data is downloaded from the GA account of the Spanish blog www.encortosabemejor.com and its analysis will help us to understand how the content is consumed by users. Some decisions that will have to be made with this information is to decide on what to write in the future, 
+ 
+## Data Description
+ 
+First, let's take a look at the first 1000 rows of data
+
+```{r, echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+t1 <- gvisTable(gadata[1:1000,],options = list(showRowNumber = FALSE, width = 800, height = min(400,27*(nrow(gadata) + 1)), allowHTML = TRUE, page = 'disable'))
+print(t1,'chart')
+```
+
+It is very important that you understand each of the columns, let's review its content 
+
+* **year**: the year the data was collected
+* **month**: the month of the year the data was collected
+* **pagePath**: the URL of the page which the data belongs to, excluding the domain. 
+* **source**: the website where the visitor was before landing into our website. If there was no website or it is not recognized, the value is (direct)
+* **medium**: the mechanism by which the visitor landed in our website. Some values are: organic (search engine), cpc (paid advertising in search engines or other websites), referral (from other website), feed (from automated reading systems). If it is not recognized, the value is (none)
+* **userType**: whether the user had been before in the website or not (New Visitor/Returning Visitor)
+* **deviceCategory**: the device of the user
+* **entrances**: how many times a user entered the website through that page
+* **pageviews**: how many times a user opened that page
+* **exits**: how many times that page was the last one opened by a user in the same session
+* **timeOnPage**: how many seconds this page has been viewed
+* **uniquePageviews**: how many times this page has been viewed in an unique session
+
+From these columns we can have some derived metrics, for example:
+
+* **Average time on page**= timeOnPage/(pageviews-exits)
+* **Bounce rate**= exits/entrances
+* **Exit rate**= exits/pageviews
+
+## Introductory analysis
+
+For example, we can visualize the seasonality of the visits per month, measured by the number of entrances
+
+```{r, echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+entrpmonth <-  group_by(gadata, month) %>% summarise(entrances = sum(entrances))
+
+ggplot(entrpmonth, aes(x = month,y = entrances)) + geom_line() +
+  scale_x_discrete(breaks = seq(1:12))
+  
+```
+
+
+And its evolution year by year
+
+```{r echo=TRUE, eval=TRUE, tidy=TRUE}
+entrpyear <-  group_by(gadata, factor(year)) %>% summarise(entrances = sum(entrances))
+entrpyear = data.frame(year = entrpyear$`factor(year)`, entrances = entrpyear$entrances)
+ggplot(entrpyear,aes(x = factor(year), y = entrances)) + geom_bar(stat="identity", fill = "lightblue", colour = "black")
+```
+
+## Questions to solve
+
+In this case study, you will have to answer five questions which will help the website to improve the content that is creating. You will need to modify and visualize the data. For these purposes, you can use the package "dplyr" (get more info with browseVignettes(package = "dplyr") and the package "ggplot2" (get more info with ?ggplot or ?qplot)
+
+1. What are the pages with more visits? Are them the same when medium is not 'cpc'? Can you make a recommendation on the most popular pages?
+
+2. What are the exit rates for the pages with the most number of exits? How would you change the content of the page to reduce exit rate? 
+
+3. What are the pages with the highest average time on page? Would you recommend the author to write more on these topics?
+
+4. What combinations of sources and mediums attract the more amount of new visitors? Is their exit rate different to the existing visitors?
+
+4. When medium is referral, which are the sources that attracted the highest number of pageviews? Based on this, should the author promote the content in any of these websites? Would it be better to invest in visitors coming from the medium 'cpc'?
+
+### Answers:
+
+Question 1. 
+
+```{r echo=TRUE, eval=TRUE, tidy=TRUE}
+pageviewsppage <-  group_by(gadata, factor(pagePath)) %>% summarise(pageviews = sum(pageviews))
+pageviewsppage = data.frame(pages = pageviewsppage$`factor(pagePath)`, pageviews = pageviewsppage$pageviews)
+pageviewsppage = pageviewsppage[sort(pageviewsppage$pageviews, decreasing =  TRUE, index.return = TRUE)$ix,]
+```
+
+```{r echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+show_data = data.frame(pageviewsppage)
+m1<-gvisTable(show_data,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
+print(m1,'chart')
+```
+
+Medium  not "cpc"
+
+```{r echo=TRUE, eval=TRUE, tidy=TRUE}
+gadata_nocpc = gadata[gadata$Medium != "cpc",]
+pageviewsppage <-  group_by(gadata_nocpc, factor(pagePath)) %>% summarise(pageviews = sum(pageviews))
+pageviewsppage = data.frame(pages = pageviewsppage$`factor(pagePath)`, pageviews = pageviewsppage$pageviews)
+pageviewsppage = pageviewsppage[sort(pageviewsppage$pageviews, decreasing =  TRUE, index.return = TRUE)$ix,]
+```
+
+```{r echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+show_data = data.frame(pageviewsppage)
+m1<-gvisTable(show_data,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
+print(m1,'chart')
+```
+
+
+ANSWER: The most visited pages are 1./como-crear-una-plantilla-php-desde-cero/ 2./(home page) and 3. 	/aplicaciones-programas-gratuito-todas-necesidades-lista-software-libre/
+
+The top 2 remain the same when the medium is not "cpc".The only exception is the 3rd most visited webpage - /aplicaciones-programas-gratuito-todas-necesidades-lista-software-libre/, which does not generate much traffic when it is not from another medium
+
+I therefore recommend mangement does not advertise the top 2 pages through any secondary medium since there is no benefit.
+
+
+
+<b>ANSWER:</b>
+
+```{r echo=TRUE, eval=TRUE, tidy=TRUE}
+exitppage <-  group_by(gadata, factor(pagePath)) %>% summarise(exits = sum(exits))
+exitppage = data.frame(pages = exitppage$`factor(pagePath)`, exits = exitppage$exits)
+exitppage = exitppage[sort(exitppage$exits, decreasing =  TRUE, index.return = TRUE)$ix,]
+```
+
+```{r echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+show_data = data.frame(exitppage)
+m1<-gvisTable(show_data,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
+print(m1,'chart')
+```
+
+<b>ANSWER:</b>
+The exit rate for the most exited pages are: 42%, 45%, and 61% respetively. The page with the highest exit rate is very advertising driven, hence the exit rate suggests visitors do not see what was advertised. The solution will be to align advertised content with actual content of the webpage.
+
+
+
+Question 3.
+
+```{r echo=TRUE, eval=TRUE, tidy=TRUE}
+timeppage <-  group_by(gadata, factor(pagePath)) %>% summarise(timeOnPage = sum(timeOnPage))
+timeppage = data.frame(pages = timeppage$`factor(pagePath)`, timeOnPage = timeppage$timeOnPage)
+timeppage = timeppage[sort(timeppage$timeOnPage, decreasing =  TRUE, index.return = TRUE)$ix,]
+```
+
+```{r echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+show_data = data.frame(timeppage)
+m1<-gvisTable(show_data,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
+print(m1,'chart')
+```
+
+<b>ANSWER:</b>
+
+The pages with the most time spent on are:
+1.	/como-crear-una-plantilla-php-desde-cero
+2.	/	(homepage)
+3.	/aplicaciones-programas-gratuito-todas-necesidades-lista-software-libre/
+
+I will suggest the author writes more on the themes (appliations and how-to-do) rather than the particular topic since interest by visitors suggests they want to learn not necessary just PHP.
+
+Question 4.
+
+```{r echo=TRUE, eval=TRUE, tidy=TRUE}
+gadata$source_medium = paste(gadata$source, gadata$Medium, sep=" ")
+source_mediumppage <-  group_by(gadata, factor(source_medium)) %>% summarise(users = sum(users))
+source_mediumppage = data.frame(pages = source_mediumppage$`factor(source_medium)`, users = source_mediumppage$users)
+source_mediumppage = source_mediumppage[sort(source_mediumppage$users, decreasing =  TRUE, index.return = TRUE)$ix,]
+```
+
+```{r echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+show_data = data.frame(source_mediumppage)
+m1<-gvisTable(show_data,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
+print(m1,'chart')
+```
+
+<b>ANSWER:</b>:
+The best combination of source and medium is "Google". 
+
+Question 5.
+
+```{r echo=TRUE, eval=TRUE, tidy=TRUE}
+gadata_referral = gadata[gadata$Medium =="referral", ]
+source_referral <-  group_by(gadata_referral, factor(source)) %>% summarise(pageviews = sum(pageviews))
+source_referral = data.frame(pages = source_referral$`factor(source)`, pageviews = source_referral$pageviews)
+source_referral = source_referral[sort(source_referral$pageviews, decreasing =  TRUE, index.return = TRUE)$ix,]
+```
+
+```{r echo=FALSE, message=FALSE, prompt=FALSE, results='asis'}
+show_data = data.frame(source_referral)
+m1<-gvisTable(show_data,options=list(showRowNumber=TRUE,width=1220, height=min(400,27*(nrow(show_data)+1)),allowHTML=TRUE,page='disable'))
+print(m1,'chart')
+```
+
+
+<b>ANSWER:</b>
+While semalt.com has the highest pageview, it is basically a web crawler and hence not a valid referral page. Facebook and LinkenIn are thus better sources of referrals.It does not however make sense to advertise on these mediums since there is already traffic coming from these. It will be better to invest in Google cpc as the pageview are almost 10x as much coming from this.
